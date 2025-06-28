@@ -1,0 +1,17 @@
+{
+  "123": {
+    "input_path": "/Users/root1/Downloads/图片助手(ImageAssistant)_批量图片下载器/www.wnacg.com",
+    "output_path": "/Users/root1/Downloads/图片助手(ImageAssistant)_批量图片下载器",
+    "size": 576,
+    "denoiser": true,
+    "denoiser_sigma": 22.0,
+    "hue_sat_adjust": true,
+    "hue_shift": 0.04,
+    "sat_shift": -0.1,
+    "generator": "networks/generator.zip",
+    "extractor": "networks/extractor.pth",
+    "gpu": false,
+    "mps": true,
+    "dpi": 300
+  }
+}

@@ -14,18 +14,15 @@ import torch.nn as nn
 from torch.autograd import Variable
 import denoising.functions as functions
     
+# UpSampleFeatures：FFDNet最后一层，负责特征上采样
 class UpSampleFeatures(nn.Module):
-    r"""Implements the last layer of FFDNet
-    """
     def __init__(self):
         super(UpSampleFeatures, self).__init__()
     def forward(self, x):
         return functions.upsamplefeatures(x)
 
+# IntermediateDnCNN：FFDNet中间部分，核心为多层卷积+BN+ReLU
 class IntermediateDnCNN(nn.Module):
-    r"""Implements the middel part of the FFDNet architecture, which
-    is basically a DnCNN net
-    """
     def __init__(self, input_features, middle_features, num_conv_layers):
         super(IntermediateDnCNN, self).__init__()
         self.kernel_size = 3
@@ -34,12 +31,11 @@ class IntermediateDnCNN(nn.Module):
         self.num_conv_layers = num_conv_layers
         self.middle_features = middle_features
         if self.input_features == 5:
-            self.output_features = 4 #Grayscale image
+            self.output_features = 4 # 灰度图
         elif self.input_features == 15:
-            self.output_features = 12 #RGB image
+            self.output_features = 12 # RGB图
         else:
             raise Exception('Invalid number of input features')
-
         layers = []
         layers.append(nn.Conv2d(in_channels=self.input_features,\
                                 out_channels=self.middle_features,\
@@ -65,34 +61,32 @@ class IntermediateDnCNN(nn.Module):
         out = self.itermediate_dncnn(x)
         return out
 
+# FFDNet：FFDNet主结构，支持灰度和RGB，输入拼接噪声图，输出噪声估计
 class FFDNet(nn.Module):
-    r"""Implements the FFDNet architecture
-    """
     def __init__(self, num_input_channels):
         super(FFDNet, self).__init__()
         self.num_input_channels = num_input_channels
         if self.num_input_channels == 1:
-            # Grayscale image
+            # 灰度图
             self.num_feature_maps = 64
             self.num_conv_layers = 15
             self.downsampled_channels = 5
             self.output_features = 4
         elif self.num_input_channels == 3:
-            # RGB image
+            # RGB图
             self.num_feature_maps = 96
             self.num_conv_layers = 12
             self.downsampled_channels = 15
             self.output_features = 12
         else:
             raise Exception('Invalid number of input features')
-
         self.intermediate_dncnn = IntermediateDnCNN(\
                 input_features=self.downsampled_channels,\
                 middle_features=self.num_feature_maps,\
                 num_conv_layers=self.num_conv_layers)
         self.upsamplefeatures = UpSampleFeatures()
-
     def forward(self, x, noise_sigma):
+        # 拼接噪声图，前向推理
         concat_noise_x = functions.concatenate_input_noise_map(x.data, noise_sigma.data)
         concat_noise_x = Variable(concat_noise_x)
         h_dncnn = self.intermediate_dncnn(concat_noise_x)

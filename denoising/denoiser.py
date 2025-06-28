@@ -13,7 +13,7 @@ this program. If not, see <http://www.gnu.org/licenses/>.
 import os
 import argparse
 import time
-
+import traceback
 
 import numpy as np
 import cv2
@@ -115,3 +115,5 @@ class FFDNetDenoiser:
             imnoisy = imnoisy[:, :, :, :-1]
         
         return variable_to_cv2_image(outim)
+
+print('update_hint called:', traceback.format_stack())
