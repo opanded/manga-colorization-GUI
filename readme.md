@@ -1,7 +1,7 @@
 <<<<<<< HEAD
 ## **UPD!!!** **A demo of Manga Colorization v2.5 is now available [link](https://mangacol.com). Feel free to check it out!**
 =======
-# 漫画自动上色工具 Manga Colorization v2.5
+# 漫画自动上色工具 Manga Colorization GUI
 >>>>>>> c061684 (Update readme.md)
 
 ## 项目简介

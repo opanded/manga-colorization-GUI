@@ -243,7 +243,7 @@ class MangaColorGUI:
         ToolTip(btn_load, '加载选中的模板参数。')
         help_label = tk.Label(adv_frm, text='使用说明', fg='skyblue', bg='#222', cursor='hand2')
         help_label.grid(row=9, column=1)
-        help_label.bind('<Button-1>', lambda e: webbrowser.open('https://github.com/你的项目文档'))
+        help_label.bind('<Button-1>', lambda e: webbrowser.open('https://github.com/manga-colorization-GUI'))
         ToolTip(help_label, '点击查看详细使用说明和常见问题。')
 
         # 高级参数页自适应布局
